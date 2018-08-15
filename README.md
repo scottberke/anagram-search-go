@@ -1,3 +1,115 @@
+# Anagram Search
+
+## Description
+This application provides fast searches for anagrams. Anagrams are ingested when the application loads and provides the following endpoints.
+Three endpoints currently exist:
+ 1. POST [`/words.json`](#words)
+ 2. GET [`/anagrams/:word.json`](#anagrams)
+ 3. DELETE [`/words/:word.json`](#words)
+ 4. DELETE [`/words.json`](#words)
+
+
+These endpoints are documented below with example usage.
+
+
+
+## To Run Locally
+To install and build, execute:
+```bash
+  $ go get github.com/scottberke/anagram-search-go
+  $ cd $GOPATH/src/github.com/scottberke/anagram-search-go
+  $ go build
+```
+
+To see available flags:
+```bash
+$ ./anagram-search-go -h
+Usage of ./anagram-search-go:
+  -port int
+    	a port to start the server on (default 8080)
+```
+
+To run:
+```bash
+$ cd $GOPATH/src/github.com/scottberke/anagram-search-go
+$ ./anagram-search-go -port=3000
+```
+
+To run tests:
+```bash
+$ cd $GOPATH/src/github.com/scottberke/anagram-search-go
+$ go test ./...
+```
+
+## Endpoints
+
+### Anagrams
+#### GET /anagrams/:words.json
+Used to get anagrams for a word. Consumes a word and returns JSON of matching anagrams.
+
+##### Request
+```bash
+curl -X GET \
+  http://localhost:3000/anagrams/read.json \
+```
+##### Response 200 OK
+```json
+{
+    "anagrams": [
+        "ared",
+        "daer",
+        "dare",
+        "dear"
+    ]
+}
+```
+
+### Words
+#### POST /words.json
+Use to add words to the anagrams dictionary. Takes a JSON array of English-language words.
+
+##### Request
+```bash
+curl -X POST \
+  http://localhost:3000/words.json \
+  -H 'Content-Type: application/json' \
+  -d '{ "words": ["read", "dear", "dare"] }'
+```
+##### Response 201 Created
+```json
+
+```
+
+#### DELETE /words.json
+Use to delete all contents in the dictionary.
+
+##### Request
+```bash
+curl -X DELETE \
+  http://localhost:3000/words.json \
+```
+##### Response 204 No Content
+```json
+
+```
+
+#### DELETE /words/:word.json
+Use to delete a single word from the dictionary.
+
+##### Request
+```bash
+curl -X DELETE \
+  http://localhost:3000/words/read.json \
+```
+##### Response 204 No Content
+```json
+
+```
+
+
+
+
+
 
 ## GO Benchmark Test
 {"anagrams":["ared","daer","dare","dear"]}
