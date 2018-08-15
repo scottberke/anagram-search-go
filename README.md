@@ -61,6 +61,11 @@ Full Benchmark Stats:
 [Benchmark Ruby Sinatra](./ruby_sinatra_benchmark.md)
 [Benchmark Go](./go_benchmark.md)
 
+***
+Other aspects of the project worth noting:
+- I chose to process the dictionary file on server load and store the anagrams in memory. I chose to do this to enable fast lookups with the tradeoff being that any anagrams added via the create endpoint wouldn't be persisted unless I updated that endpoint to also write them to the txt file. This could also be an issue if there were multiple instances of the server running due to anagram creation endpoint causing the instances to become out of sync. The size of the dictionary in memory was fairly trivial and shouldn't cause any issues.
+- Ingesting the file into memory should be around `O(n log n * m )` where `n` is the length of the longest word and `m` is the number of words in the txt file
+- Getting anagrams should be around `O(n log n)` where `n` is the length of the longest word. This is due to the hash lookups taking place in constant time and the sort needing to take place to get the key. There's added complexity for the set difference being performed on `[all anagrams for search word] - [search word]` but that something along the lines of `O(n)` where `n` is the length of the array of `[all anagrams for search word]` (this complexity is what I understand after looking at the Ruby source code and seeing that its O(x+y) to do set difference with x and y being the length of the two arrays - in our case [search word] array length is constant or 1)
 
 ## To Run Locally
 To install and build, execute:
